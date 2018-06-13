@@ -7,5 +7,7 @@ window.onload = () => {
     console.log("Page loadeded!");
     var game = new GameCore();
     var gui = new GUI(game);
+    
+    game.init(gui.getCanvas());
     game.start();
 }

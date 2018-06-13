@@ -18,10 +18,13 @@ class GUI {
 
         var mainMenu = new MainMenu();
         mainMenu.on('startNewGameClicked', this.startNewGameClicked.bind(this));
+        mainMenu.on('highscoresClicked', this.highscoresClicked.bind(this));
         this.phases.push(mainMenu);
 
         this.phases.push(new HighScores());
-        this.phases.push(new Game());
+
+        this.gamePhase = new Game();
+        this.phases.push(this.gamePhase);
     }
 
     hideAllPhases() {
@@ -33,6 +36,10 @@ class GUI {
         let phase = this.phases.find(p => p.name === phaseName)
         if (phase)
             phase.show();
+    }
+
+    getCanvas() {
+        return this.gamePhase.canvas;
     }
 
     preloadStarted() {
@@ -48,6 +55,11 @@ class GUI {
     startNewGameClicked() {
         console.log("new game clicked")
         this.setPhase("game");
+    }
+
+    highscoresClicked() {
+        console.log("highscores clicked")
+        this.setPhase("highscores");
     }
 
 }

@@ -18,6 +18,7 @@ class MainMenu extends Phase {
         this.element.appendChild(this.highscoresButton);
 
         this.startGameButton.addEventListener("click", () => this.emit("startNewGameClicked"));
+        this.highscoresButton.addEventListener("click", () => this.emit("highscoresClicked"));
     }
 }
 
