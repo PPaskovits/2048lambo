@@ -1,8 +1,9 @@
 "use strict";
 
 class Sprite {
-    constructor(image) {
-        this.image = image;
+    constructor(imagePath) {
+        this.image = new Image();
+        this.image.src = imagePath;
         this._posX = 0;
         this._posY = 0;
         this._width = 0;

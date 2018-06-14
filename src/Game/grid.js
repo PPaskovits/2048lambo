@@ -1,20 +1,36 @@
 "use strict";
 
 import GridImage from '../Assets/grid.png';
+import Sprite from './Renderer/sprite.js';
 
 class Grid {
-    constructor(renderer) {
-        this.renderer = renderer;
-        this.grid = this.renderer.createSprite(GridImage);
-        this.renderer.addToScene(this.grid);
+    constructor(centerX, centerY) {
+        this.grid = new Sprite(GridImage);
         this.grid.width = 450;
         this.grid.height = 450;
-        this.setToCenter();
+        this.grid.posX = centerX - this.grid.width/2;
+        this.grid.posY = centerY -  this.grid.height/2;
     }
     
-    setToCenter() {
-        this.grid.posX = this.renderer.getCanvasWidth()/2 - 225;
-        this.grid.posY = this.renderer.getCanvasHeight()/2 - 225;
+    setCenter(centerX, centerY) {
+        this.grid.posX = centerX - this.grid.width/2;
+        this.grid.posY = centerY - this.grid.height/2;
+    }
+
+    get sprite() {
+        return this.grid;
+    }
+
+    set sprite(sprite) {
+        console.log("Invalid acces to sprite");
+    }
+
+    get pivotX() {
+        return this.grid.posX;
+    }
+
+    get pivotY() {
+        return this.grid.posY;
     }
 }
 
