@@ -7,6 +7,11 @@ const Right = 1;
 const Up = 2;
 const Down = 3;
 
+var BoardState = {
+    Game: 1,
+    Animating: 2,
+    End: 3
+}
 
 class Board extends EventEmitter{
     constructor(pivotX, pivotY, maxI, maxJ) {
@@ -16,6 +21,17 @@ class Board extends EventEmitter{
         this.pivotY = pivotY;
         this.maxI = maxI;
         this.maxJ = maxJ;
+        this._state = BoardState.Game;
+    }
+
+    get state() {
+        return this._state;
+    }
+
+    set state(newState) {
+        if (this._state != newState) {
+            this._state = newState;
+        }
     }
 
     addNewCard(value, i,j) {
@@ -115,6 +131,14 @@ class Board extends EventEmitter{
         return this.cards.find(card => card.row == row && card.column == column);
     }
 
+    getMaxCardValue() {
+        var value = 0;
+        this.cards.forEach(card => {
+            value = Math.max(value, card.value);
+        });
+        return value;
+    }
+
     getOppositeDirection(direction) {
         var opposite = 0;
         switch (direction) {
@@ -131,6 +155,7 @@ class Board extends EventEmitter{
     mergeCards(card1, card2) {
         card1.upgrade();
         this.removeCard(card2);
+        this.emit('cardUpgraded', card1);
     }
 
     moveCard(card, spot) {
@@ -181,6 +206,9 @@ class Board extends EventEmitter{
     }
 
     move(movement) {
+        if (!this.canStep())
+            return;
+
         if (this.moveCards(movement, this.moveCard.bind(this), this.mergeCards.bind(this))) {
             this.cards.forEach(card => card.stepFinished());
             this.postStep();
@@ -188,14 +216,22 @@ class Board extends EventEmitter{
     }
 
     postStep() {
+        if (this.getMaxCardValue() >= 8) {
+            this.state = BoardState.End;
+            this.emit('gameWon');
+            return
+        }
+
         this.addNewCardRandom();
         if (this.isFull()) {
             let canMoveOrMerge = (this.moveCards(Left) || 
                                   this.moveCards(Right) ||
                                   this.moveCards(Up) ||
                                   this.moveCards(Down));
-            if (!canMoveOrMerge)
-                console.log("Game over!");
+            if (!canMoveOrMerge) {
+                this.state = BoardState.End;
+                this.emit('gameOver');
+            }
         }
     }
 
@@ -213,6 +249,11 @@ class Board extends EventEmitter{
 
     down() {
         this.move(Down);
+    }
+
+    reset() {
+        this.emptyBoard();
+        this.state = BoardState.Game;
     }
 
     emptyBoard() {
@@ -250,6 +291,10 @@ class Board extends EventEmitter{
             }
         }
         return cardsArray;
+    }
+
+    canStep() {
+        return this.state === BoardState.Game;
     }
 }
 

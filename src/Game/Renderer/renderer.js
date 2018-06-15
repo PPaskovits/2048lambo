@@ -6,8 +6,8 @@ import Sprite from './sprite.js';
 class Renderer {
     constructor(canvas) {
         this.canvas = canvas;
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.canvas.width = 500;
+        this.canvas.height = 500;
         this.context = this.canvas.getContext('2d');
         this.scene = new Scene();
     }

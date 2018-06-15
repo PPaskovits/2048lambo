@@ -13,17 +13,23 @@ class GUI {
         this.game = game;
         game.on('preloadStarted', this.preloadStarted.bind(this));
         game.on('preloadFinished', this.preloadFinished.bind(this));
+        game.on('scoreChanged', this.scoreChanged.bind(this));
+        game.on('bestScoreChanged', this.bestScoreChanged.bind(this));
+
         this.phases = [];
         this.phases.push(new Loading());
 
         var mainMenu = new MainMenu();
         mainMenu.on('startNewGameClicked', this.startNewGameClicked.bind(this));
         mainMenu.on('highscoresClicked', this.highscoresClicked.bind(this));
+
         this.phases.push(mainMenu);
 
         this.phases.push(new HighScores());
 
         this.gamePhase = new Game();
+        this.gamePhase.on('newGameClicked', this.startNewGameClicked.bind(this));
+
         this.phases.push(this.gamePhase);
     }
 
@@ -52,9 +58,18 @@ class GUI {
         this.setPhase("mainmenu");
     }
 
+    scoreChanged(score) {
+        this.gamePhase.setScore(score);
+    }
+
+    bestScoreChanged(bestScore) {
+        this.gamePhase.setBestScore(bestScore);
+    }
+
     startNewGameClicked() {
         console.log("new game clicked")
         this.setPhase("game");
+        this.game.startNewGame();
     }
 
     highscoresClicked() {

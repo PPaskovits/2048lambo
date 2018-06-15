@@ -2,6 +2,11 @@ body {
     margin: 0;
     padding: 0;
     border: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+    background-color: #8e121c;
 }
 
 div {
@@ -15,18 +20,69 @@ div {
 
 .btn {
     cursor: pointer;
-    color:  rgb(61, 36, 3);
-    background-color: rgb(214, 181, 131);
+    color:  white;
+    background-color: #8e121c;
+    align-self: stretch;
+    font-family: sans-serif;
+    font-size: 40px;
+    border: 1px solid black ;
+    border-radius: 5px;
 }
 
 .btn:hover {
-    background-color:  rgb(61, 36, 3);
-    color: rgb(214, 181, 131);
+    background-color: white;
+    color: #8e121c;
 }
 
 .view-container {
-    background-color: #66d5f9;
-    height: 100vh;
-    align-items: flex-end;
-    position: relative
+    align-items: center;
+}
+
+.viewport {
+    height:500px;
+    width:500px;
+}
+
+.menu-container {
+    height: 450px;
+    width: 450px;
+    background-color:  rgba(255, 255, 255, 0.5);
+    border: 1px solid black ;
+    border-radius: 5px;
+    padding:25px;
+}
+
+.column {
+    flex-direction: column;
+}
+
+.title {
+    font-family: sans-serif;
+    font-size: 40px;
+    color:white;
+}
+
+.score-container {
+    background-color: #8e121c;
+    border: 1px solid black ;
+    border-radius: 5px;
+    padding: 5px;
+    width: 150px;
+}
+
+.score-title {
+    font-size: 25px;
+    color:white;
+}
+
+.score {
+    color:  white;
+    font-size: 30px;
+}
+
+.new-game-btn {
+    width:150px;
+    align-self: center;
+    padding: 5px;
+    font-size: 25px;
 }

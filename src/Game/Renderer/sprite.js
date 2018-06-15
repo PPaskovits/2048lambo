@@ -8,6 +8,7 @@ class Sprite {
         this._posY = 0;
         this._width = 0;
         this._height = 0;
+        this.visible = true;
     }
 
     get posX() {
@@ -43,6 +44,9 @@ class Sprite {
     }
 
     draw(context) {
+        if (!this.visible)
+            return;
+
         context.drawImage(this.image, this._posX, this._posY, this._width, this._height);
     }
 
@@ -50,6 +54,14 @@ class Sprite {
         if (this.image) {
             this.image.src = imagePath;
         }
+    }
+
+    hide() {
+        this.visible = false;
+    }
+
+    show() {
+        this.visible = true;
     }
 }
 

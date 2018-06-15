@@ -5,7 +5,11 @@ import Phase from './phase.js';
 class Loading extends Phase {
     constructor() {
         super('loading');
-        this.element.innerHTML = "Loading...";
+        this.loadingText = document.createElement('div');
+        this.loadingText.classList.add('title');
+        this.loadingText.innerHTML = 'Loading...';
+
+        this.element.appendChild(this.loadingText);
     }
 }
 
