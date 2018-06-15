@@ -32,10 +32,16 @@ function getCardImage(value) {
     return "";
 }
 
+var CardState = {
+    Normal: 0,
+    Upgraded: 1,
+    New: 2
+}
+
 class Card {
     constructor(value, pivotX, pivotY, maxI, maxJ) {
-        this.value = value;
-        this.cardSprite = new Sprite(getCardImage(this.value));
+        this._value = value;
+        this.cardSprite = new Sprite(getCardImage(this._value));
         this.cardSprite.width = 100;
         this.cardSprite.height = 100;
         this.pivotX = pivotX;
@@ -43,6 +49,7 @@ class Card {
         this.maxI = maxI;
         this.maxJ = maxJ;
         this.setToGrid(0,0);
+        this._state = CardState.New;
     }
 
     setToGrid(i, j) {
@@ -63,6 +70,22 @@ class Card {
 
     set sprite(sprite) {
         console.log("Invalid acces to sprite");
+    }
+
+    get row() {
+        return this.i;
+    }
+
+    get column() {
+        return this.j
+    }
+
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        console.log("Invalid acces to card value");
     }
 
     moveLeft() {
@@ -86,6 +109,22 @@ class Card {
     moveDown() {
         if (this.j < this.maxJ) {
             this.setToGrid(this.i, ++this.j);
+        }
+    }
+
+    stepFinished() {
+        this._state = CardState.Normal; 
+    }
+
+    canMerge(otherCard) {
+        return this._state !== CardState.Upgraded && otherCard.state !== CardState.Upgraded && this._value === otherCard.value;
+    }
+
+    upgrade() {
+        if (this.value < 2048) {
+            this._value *= 2;
+            this.cardSprite.setImage(getCardImage(this._value));
+            this._state = CardState.Upgraded;
         }
     }
 }

@@ -21,18 +21,10 @@ class GameCore extends EventEmitter {
         this.renderer.addToScene(this.grid.sprite);
         this.board = new Board(this.grid.pivotX, this.grid.pivotY, 3, 3);
         this.board.on('newCardAdded', (sprite) => { this.renderer.addToScene(sprite); } );
+        this.board.on('cardRemoved', (sprite) => { this.renderer.removeFromScene(sprite); } );
 
-        this.board.addNewCard(2,0,0);
-        this.board.addNewCard(4,1,0);
-        this.board.addNewCard(8,2,0);
-        this.board.addNewCard(16,3,0);
-        this.board.addNewCard(32,0,1);
-        this.board.addNewCard(64,1,1);
-        this.board.addNewCard(128,2,1);
-        this.board.addNewCard(256,3,1);
-        this.board.addNewCard(512,0,2);
-        this.board.addNewCard(1024,1,2);
-        this.board.addNewCard(2048,2,2);
+        this.board.addNewCardRandom();
+        this.board.addNewCardRandom();
     }
 
     start() {

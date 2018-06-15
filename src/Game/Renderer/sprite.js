@@ -45,6 +45,12 @@ class Sprite {
     draw(context) {
         context.drawImage(this.image, this._posX, this._posY, this._width, this._height);
     }
+
+    setImage(imagePath) {
+        if (this.image) {
+            this.image.src = imagePath;
+        }
+    }
 }
 
 export default Sprite;
