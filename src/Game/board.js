@@ -33,6 +33,7 @@ class Board extends EventEmitter{
         if (this.isFull())
             return;
 
+        var value = Math.random > 0.7 ? 4 : 2;
         var i = Math.floor(Math.random() * (this.maxI + 1));
         var j = Math.floor(Math.random() * (this.maxJ + 1)); 
         while (!this.addNewCard(2, i, j)) {
@@ -128,13 +129,11 @@ class Board extends EventEmitter{
 
 
     mergeCards(card1, card2) {
-        console.log("merge at: "+card1.row + " , " + card1.column);
         card1.upgrade();
         this.removeCard(card2);
     }
 
     moveCard(card, spot) {
-        console.log(card.row + " , " + card.column);
         card.setToGrid(spot.row, spot.column);
     }
 
@@ -184,15 +183,19 @@ class Board extends EventEmitter{
     move(movement) {
         if (this.moveCards(movement, this.moveCard.bind(this), this.mergeCards.bind(this))) {
             this.cards.forEach(card => card.stepFinished());
-            this.addNewCardRandom();
-            if (this.isFull()) {
-                let canMoveOrMerge = (this.moveCards(Left) || 
-                                      this.moveCards(Right) ||
-                                      this.moveCards(Up) ||
-                                      this.moveCards(Down));
-                if (!canMoveOrMerge)
-                    console.log("Game over!");
-            }
+            this.postStep();
+        }
+    }
+
+    postStep() {
+        this.addNewCardRandom();
+        if (this.isFull()) {
+            let canMoveOrMerge = (this.moveCards(Left) || 
+                                  this.moveCards(Right) ||
+                                  this.moveCards(Up) ||
+                                  this.moveCards(Down));
+            if (!canMoveOrMerge)
+                console.log("Game over!");
         }
     }
 
@@ -210,6 +213,43 @@ class Board extends EventEmitter{
 
     down() {
         this.move(Down);
+    }
+
+    emptyBoard() {
+        this.cards.forEach(card => this.emit("cardRemoved", card.sprite));
+        this.cards = [];
+    }
+
+    setBoard(cardsArray) {
+        if (cardsArray.length != (this.maxI+1)*(this.maxJ+1)) {
+            console.error("Invalid cards array length.");
+            return;
+        }
+        this.emptyBoard();
+        var i = 0;
+        var j = 0;
+
+        cardsArray.forEach(value => {
+            if (value > 0)
+                this.addNewCard(value, i, j);
+            j = i >= this.maxI ? (j + 1) % (this.maxJ + 1) : j;
+            i = (i + 1) % (this.maxI + 1);
+        })
+    }
+
+    getBoard() {
+        var cardsArray = [];
+        for (var j = 0; j <= this.maxJ; ++j) {
+            for (var i = 0; i <= this.maxI; ++i) {
+                var card = this.getCard(i, j);
+                if (card) {
+                    cardsArray.push(card.value);
+                } else {
+                    cardsArray.push(0);
+                }
+            }
+        }
+        return cardsArray;
     }
 }
 

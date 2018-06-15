@@ -1,7 +1,7 @@
 "use strict";
 
 import EventEmitter from 'events';
-import KeyboardState from './keyboardstate.js';
+import KeyboardState from './Engine/keyboardstate.js';
 import Renderer from './Renderer/renderer.js';
 import Grid from './grid.js';
 import Card from './card.js';
@@ -23,8 +23,14 @@ class GameCore extends EventEmitter {
         this.board.on('newCardAdded', (sprite) => { this.renderer.addToScene(sprite); } );
         this.board.on('cardRemoved', (sprite) => { this.renderer.removeFromScene(sprite); } );
 
-        this.board.addNewCardRandom();
-        this.board.addNewCardRandom();
+                var cardsArray = 
+                    [0, 2,  0, 0,
+                     2, 4,  0, 0,
+                     4, 0,  2, 16,
+                     2, 4,  0, 2];
+                this.board.setBoard(cardsArray);
+        //this.board.addNewCardRandom();
+        //this.board.addNewCardRandom();
     }
 
     start() {

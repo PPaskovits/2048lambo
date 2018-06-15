@@ -40,16 +40,24 @@ var CardState = {
 
 class Card {
     constructor(value, pivotX, pivotY, maxI, maxJ) {
+        if (value <= 0) {
+            console.error("Invalid card value!");
+            return;
+        }
         this._value = value;
-        this.cardSprite = new Sprite(getCardImage(this._value));
-        this.cardSprite.width = 100;
-        this.cardSprite.height = 100;
         this.pivotX = pivotX;
         this.pivotY = pivotY;
         this.maxI = maxI;
         this.maxJ = maxJ;
-        this.setToGrid(0,0);
         this._state = CardState.New;
+        this.createSprite();
+        this.setToGrid(0,0);
+    }
+
+    createSprite() {
+        this.cardSprite = new Sprite(getCardImage(this._value));
+        this.cardSprite.width = 100;
+        this.cardSprite.height = 100;
     }
 
     setToGrid(i, j) {
@@ -60,9 +68,19 @@ class Card {
 
         this.i = i;
         this.j = j;
-        this.cardSprite.posX = this.pivotX + (i+1)*10 + i*100;
-        this.cardSprite.posY = this.pivotY + (j+1)*10 + j*100; 
+        this.setSpritePosition(this.pivotX + (i+1)*10 + i*100, this.pivotY + (j+1)*10 + j*100);
+
     }
+
+    setSpritePosition(x, y) {
+        this.cardSprite.posX = x;
+        this.cardSprite.posY = y;
+    }
+
+    updateSpriteImage() {
+        this.cardSprite.setImage(getCardImage(this._value));
+    }
+
 
     get sprite() {
         return this.cardSprite;
@@ -123,7 +141,7 @@ class Card {
     upgrade() {
         if (this.value < 2048) {
             this._value *= 2;
-            this.cardSprite.setImage(getCardImage(this._value));
+            this.updateSpriteImage();
             this._state = CardState.Upgraded;
         }
     }
