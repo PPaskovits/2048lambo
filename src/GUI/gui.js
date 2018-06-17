@@ -15,6 +15,7 @@ class GUI {
         game.on('preloadFinished', this.preloadFinished.bind(this));
         game.on('scoreChanged', this.scoreChanged.bind(this));
         game.on('bestScoreChanged', this.bestScoreChanged.bind(this));
+        game.on('highscoresChanged', this.highscoresChanged.bind(this));
 
         this.phases = [];
         this.phases.push(new Loading());
@@ -25,12 +26,16 @@ class GUI {
 
         this.phases.push(mainMenu);
 
-        this.phases.push(new HighScores());
+        this.highscores = new HighScores();
+        this.highscores.on('backClicked', this.backClicked.bind(this));
+        this.phases.push(this.highscores);
 
         this.gamePhase = new Game();
         this.gamePhase.on('newGameClicked', this.startNewGameClicked.bind(this));
 
         this.phases.push(this.gamePhase);
+
+        this.lastPhases = [];
     }
 
     hideAllPhases() {
@@ -42,6 +47,7 @@ class GUI {
         let phase = this.phases.find(p => p.name === phaseName)
         if (phase)
             phase.show();
+        this.phases.push(phase);
     }
 
     getCanvas() {
@@ -66,15 +72,25 @@ class GUI {
         this.gamePhase.setBestScore(bestScore);
     }
 
+    highscoresChanged(highscores) {
+        this.highscores.buildHighscores(highscores);
+    }
+
     startNewGameClicked() {
-        console.log("new game clicked")
         this.setPhase("game");
         this.game.startNewGame();
     }
 
     highscoresClicked() {
-        console.log("highscores clicked")
         this.setPhase("highscores");
+    }
+
+    backClicked() {
+        if (this.phases.length > 1) {
+            this.phases.splice(-1,1);
+            this.hideAllPhases();
+            this.phases[this.phases.length -1].show();
+        }
     }
 
 }

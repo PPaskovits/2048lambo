@@ -9,6 +9,16 @@ class Game extends Phase {
         this.viewContainer.classList.add('view-container');
         this.viewContainer.classList.add('column');
 
+        this.createScoresTable();
+
+        this.createCanvas();
+
+        this.createNewGameButton();
+
+        this.element.appendChild(this.viewContainer);
+    }
+
+    createScoresTable() {
         this.scores = document.createElement('div');
 
         this.scoreContainer = document.createElement('div');
@@ -44,19 +54,21 @@ class Game extends Phase {
         this.scores.appendChild(this.bestScoreContainer);
 
         this.viewContainer.appendChild(this.scores);
+    }
 
+    createCanvas() {
         this.canvas = document.createElement('canvas');
         this.canvas.classList.add('viewport');
         this.viewContainer.appendChild(this.canvas);
+    }
 
+    createNewGameButton() {
         this.newGameBtn = document.createElement('div');
         this.newGameBtn.classList.add('btn');
-        this.newGameBtn.classList.add('new-game-btn');
+        this.newGameBtn.classList.add('small');
         this.newGameBtn.innerHTML = "New Game";
         this.newGameBtn.addEventListener("click", () => this.emit("newGameClicked"));
         this.viewContainer.appendChild(this.newGameBtn);
-
-        this.element.appendChild(this.viewContainer);
     }
 
     setScore(score) {

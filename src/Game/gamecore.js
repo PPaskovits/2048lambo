@@ -7,6 +7,7 @@ import Grid from './grid.js';
 import Card from './card.js';
 import Board from './board.js';
 
+import Highscore from './highscores.js';
 import BGImage from '../Assets/bg.jpg';
 
 class GameCore extends EventEmitter {
@@ -31,7 +32,9 @@ class GameCore extends EventEmitter {
         this.board.on('gameOver', (card) => { this.gameEnd(false); } );
 
         this._score = 0;
-        this._bestScore = 0;
+        this.highscore = new Highscore();
+        this.highscore.loadHighscore();
+        this.emit('highscoresChanged', this.highscore.getScores());
     }
 
     get score() {
@@ -44,15 +47,13 @@ class GameCore extends EventEmitter {
     }
 
     get bestScore() {
-        return this._bestScore;
+        return this.highscore.getBestScore();
     }
 
     set bestScore(newBestScore) {
-        this._bestScore = newBestScore;
-        this.emit('bestScoreChanged', this._bestScore);
+        console.error('invalid best score set call');
+        return;
     }
-
-
 
     start() {
         this.startPreload();
@@ -104,10 +105,10 @@ class GameCore extends EventEmitter {
     gameEnd(won) {
         this.grid.hide();
         this.board.emptyBoard();
-        if (this.score > this.bestScore) {
-            this.bestScore = this.score;
-        }
+        this.highscore.registerScore(this.score);
 
+        this.emit('bestScoreChanged', this.highscore.getBestScore()); 
+        this.emit('highscoresChanged', this.highscore.getScores());
     }
 }
 

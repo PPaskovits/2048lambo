@@ -216,7 +216,7 @@ class Board extends EventEmitter{
     }
 
     postStep() {
-        if (this.getMaxCardValue() >= 8) {
+        if (this.getMaxCardValue() >= 2048) {
             this.state = BoardState.End;
             this.emit('gameWon');
             return

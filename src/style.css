@@ -7,6 +7,11 @@ body {
     align-items: center;
     height:100vh;
     background-color: #8e121c;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 div {
@@ -27,6 +32,7 @@ div {
     font-size: 40px;
     border: 1px solid black ;
     border-radius: 5px;
+    margin:10px;
 }
 
 .btn:hover {
@@ -80,7 +86,7 @@ div {
     font-size: 30px;
 }
 
-.new-game-btn {
+.small {
     width:150px;
     align-self: center;
     padding: 5px;
