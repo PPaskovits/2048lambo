@@ -6,13 +6,23 @@ import Card from '../src/Game/card.js';
 import Board from '../src/Game/board.js';
 
 export default function runBoardTests() {
-    sinon.stub(Card.prototype, 'createSprite').callsFake(() => 1);
-    sinon.stub(Card.prototype, 'setSpritePosition').callsFake(() => 1);
-    sinon.stub(Card.prototype, 'updateSpriteImage').callsFake(() => 1);
-    sinon.stub(Board.prototype, 'postStep').callsFake(() => 1);
     var board = new Board(0, 0, 3, 3);
 
     describe('Board Test', function() {
+       before(function () {
+            sinon.stub(Card.prototype, 'createSprite').callsFake(() => 1);
+            sinon.stub(Card.prototype, 'setSpritePosition').callsFake(() => 1);
+            sinon.stub(Card.prototype, 'updateSpriteImage').callsFake(() => 1);
+            sinon.stub(Board.prototype, 'postStep').callsFake(() => 1);
+        });
+
+        after(function () {
+            Card.prototype.createSprite.restore();
+            Card.prototype.setSpritePosition.restore();
+            Card.prototype.updateSpriteImage.restore();
+            Board.prototype.postStep.restore();
+        });
+
         describe('Simple set/get board ', function() {
             it('should be equal ', function() {
                 var cardsArray = 
@@ -22,6 +32,18 @@ export default function runBoardTests() {
                      1024, 256, 512, 2];
                 board.setBoard(cardsArray);3
                 chai.expect(cardsArray).to.eql(board.getBoard());
+
+                var faultyArray = [1,2,3];
+                board.setBoard(faultyArray);
+                chai.expect(cardsArray).to.eql(board.getBoard());
+
+                board.reset();
+                var emptyBoardArray = 
+                    [0, 0, 0, 0,
+                     0, 0, 0, 0,
+                     0, 0, 0, 0,
+                     0, 0, 0, 0];
+                chai.expect(emptyBoardArray).to.eql(board.getBoard());
             });
         });
 

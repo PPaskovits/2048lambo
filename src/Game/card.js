@@ -106,30 +106,6 @@ class Card {
         console.log("Invalid acces to card value");
     }
 
-    moveLeft() {
-        if (this.i > 0) {
-            this.setToGrid(--this.i, this.j);
-        }
-    }
-
-    moveRight() {
-        if (this.i < this.maxI) {
-            this.setToGrid(++this.i, this.j);
-        }
-    }
-
-    moveUp() {
-        if (this.j > 0) {
-            this.setToGrid(this.i, --this.j);
-        }
-    }
-
-    moveDown() {
-        if (this.j < this.maxJ) {
-            this.setToGrid(this.i, ++this.j);
-        }
-    }
-
     stepFinished() {
         this._state = CardState.Normal; 
     }

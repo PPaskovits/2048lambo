@@ -36,7 +36,7 @@ class Sprite {
     }
 
     get height() {
-        return this._width;
+        return this._height;
     }
 
     set height(height) {

@@ -12,13 +12,6 @@ class Renderer {
         this.scene = new Scene();
     }
 
-    createSprite(image) {
-        var spriteImage = new Image();
-        spriteImage.src = image;
-        var sprite =  new Sprite(spriteImage);
-        return sprite;
-    }
-
     addToScene(object) {
         this.scene.addObject(object);
     }

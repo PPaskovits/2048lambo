@@ -264,7 +264,7 @@ class Board extends EventEmitter{
     setBoard(cardsArray) {
         if (cardsArray.length != (this.maxI+1)*(this.maxJ+1)) {
             console.error("Invalid cards array length.");
-            return;
+            return [];
         }
         this.emptyBoard();
         var i = 0;
