@@ -34,6 +34,8 @@ class GameCore extends EventEmitter {
         this._score = 0;
         this.highscore = new Highscore();
         this.highscore.loadHighscore();
+
+        this.emit('bestScoreChanged', this.highscore.getBestScore());
         this.emit('highscoresChanged', this.highscore.getScores());
     }
 
@@ -68,7 +70,6 @@ class GameCore extends EventEmitter {
     preloadFinished() {
         this.emit("preloadFinished");
         window.requestAnimationFrame(this.update.bind(this), this.renderer.canvas);
-        console.log(BGImage);
         document.body.style.backgroundImage = "url('"+BGImage+"')";
         document.body.style.backgroundRepeat = "repeat";
     }
@@ -82,21 +83,28 @@ class GameCore extends EventEmitter {
     }
 
     keyWasPressed(key) {
-        if (!this.board.canStep())
+        if (!this.board.canStep() || this.board.isAnimating()) {
             return;
+        }
 
         if (key === "left") {
             this.board.left();
+            this.board.requestNewCard();
         } else if (key === "right") {
             this.board.right();
+            this.board.requestNewCard();
         } else if (key === "up") {
             this.board.up();
+            this.board.requestNewCard();
         } else if (key === "down") {
             this.board.down();
+            this.board.requestNewCard();
         }
     }
 
     update() {
+        this.board.update();
+
         this.renderer.render();
 
         window.requestAnimationFrame(this.update.bind(this), this.renderer.canvas);

@@ -43,6 +43,15 @@ class Sprite {
         this._height = height;
     }
 
+    resize(width, height) {
+        var centerX = this.posX + this.width/2;
+        var centerY = this.posY + this.height/2;
+        this.posX = centerX - width/2;
+        this.posY = centerY - height/2;
+        this.width = width;
+        this.height = height;
+    }
+
     draw(context) {
         if (!this.visible)
             return;

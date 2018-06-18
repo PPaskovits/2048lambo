@@ -6,23 +6,7 @@ import Renderer from '../src/Game/Renderer/renderer.js';
 import Scene from '../src/Game/Renderer/scene.js';
 import Sprite from '../src/Game/Renderer/sprite.js';
 
-class ImageMock {
-    constructor() {
-        this.src = "";
-    }
-}
-
-class CanvasMock {
-    constructor() {
-        this.width = 0;
-        this.height = 0;
-        this.context = {draw: () => {}, clearRect: (x,y,width,height) => {}};
-    }
-
-    getContext(str) {
-        return this.context;
-    }
-}
+import { ImageMock, CanvasMock } from './mocks.js';
 
 export default function runRendererTests() {
     global.Image = ImageMock

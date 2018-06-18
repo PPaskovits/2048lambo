@@ -4,27 +4,16 @@ const sinon = require('sinon');
 
 import Card from '../src/Game/card.js';
 import Board from '../src/Game/board.js';
+import { SpriteMock } from './mocks.js';
 
 export default function runBoardTests() {
     var board = new Board(0, 0, 3, 3);
 
     describe('Board Test', function() {
-       before(function () {
-            sinon.stub(Card.prototype, 'createSprite').callsFake(() => 1);
-            sinon.stub(Card.prototype, 'setSpritePosition').callsFake(() => 1);
-            sinon.stub(Card.prototype, 'updateSpriteImage').callsFake(() => 1);
-            sinon.stub(Board.prototype, 'postStep').callsFake(() => 1);
-        });
-
-        after(function () {
-            Card.prototype.createSprite.restore();
-            Card.prototype.setSpritePosition.restore();
-            Card.prototype.updateSpriteImage.restore();
-            Board.prototype.postStep.restore();
-        });
-
+        global.Sprite = SpriteMock;
         describe('Simple set/get board ', function() {
             it('should be equal ', function() {
+
                 var cardsArray = 
                     [0,    2,   4,   8,
                      16,   32,  64,  128,
@@ -44,6 +33,58 @@ export default function runBoardTests() {
                      0, 0, 0, 0,
                      0, 0, 0, 0];
                 chai.expect(emptyBoardArray).to.eql(board.getBoard());
+            });
+        });
+
+        describe('Game over board ', function() {
+            it('should be emitted ', function() {
+
+                var cardsArray = 
+                    [0,    16,   4,   8,
+                     16,   32,  64,  128,
+                     2,    512,   32,  4,
+                     1024, 256, 512, 2];
+
+                board.setBoard(cardsArray);
+
+                var watcher = { gameOver: function () {} };
+
+                var spy = sinon.spy(watcher, "gameOver");
+
+                board.on("gameOver", watcher.gameOver);
+
+                while (board.isAnimating())
+                    board.update();
+
+                board.requestNewCard();
+                board.update();
+                
+                chai.assert(spy.calledOnce);
+            });
+        });
+
+        describe('Game won board ', function() {
+            it('should be emitted ', function() {
+
+                var cardsArray = 
+                    [0,    16,   4,   8,
+                     16,   32,  64,  128,
+                     1024, 512, 32,  4,
+                     1024, 256, 512, 2];
+
+                board.setBoard(cardsArray);
+
+                var watcher = { gameWon: function () {} };
+
+                var spy = sinon.spy(watcher, "gameWon");
+
+                board.on("gameWon", watcher.gameWon);
+
+                board.down();
+                
+                board.update();
+                
+                chai.assert(spy.calledOnce);
             });
         });
 

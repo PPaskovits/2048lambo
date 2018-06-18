@@ -17,11 +17,13 @@ class Board extends EventEmitter{
     constructor(pivotX, pivotY, maxI, maxJ) {
         super();
         this.cards = [];
+        this.removedCards = [];
         this.pivotX = pivotX;
         this.pivotY = pivotY;
         this.maxI = maxI;
         this.maxJ = maxJ;
         this._state = BoardState.Game;
+        this.newCardRequested = false;
     }
 
     get state() {
@@ -37,8 +39,7 @@ class Board extends EventEmitter{
     addNewCard(value, i,j) {
         var card;
         if (this.isValidIndices(i, j) && !this.getCard(i, j)) {
-            card = new Card(value, this.pivotX, this.pivotY, this.maxI, this.maxJ);
-            card.setToGrid(i,j);
+            card = new Card(value, this.pivotX, this.pivotY, i, j, this.maxI, this.maxJ);
             this.cards.push(card);
             this.emit('newCardAdded', card.sprite);
         }
@@ -154,12 +155,18 @@ class Board extends EventEmitter{
 
     mergeCards(card1, card2) {
         card1.upgrade();
-        this.removeCard(card2);
+        
+        this.cards = this.cards.filter(c => c != card2);
+        this.removedCards.push(card2);
+        card2.moveToGrid(card1.row, card1.column, () => { 
+            this.removedCards = this.removedCards.filter(c => c!= card2);
+            this.emit("cardRemoved", card2.sprite);
+        });
         this.emit('cardUpgraded', card1);
     }
 
     moveCard(card, spot) {
-        card.setToGrid(spot.row, spot.column);
+        card.moveToGrid(spot.row, spot.column);
     }
 
     moveCards(movement, onMove, onMerge) {
@@ -211,26 +218,42 @@ class Board extends EventEmitter{
 
         if (this.moveCards(movement, this.moveCard.bind(this), this.mergeCards.bind(this))) {
             this.cards.forEach(card => card.stepFinished());
-            this.postStep();
         }
     }
 
-    postStep() {
+    requestNewCard() {
+        this.newCardRequested = true;
+    }
+
+    isAnimating() {
+        var animating = false;
+        this.cards.forEach(card => animating |= card.animating());
+        this.removedCards.forEach(card => animating |= card.animating());
+        return animating;
+    }
+
+    update() {
+        this.cards.forEach(card => card.update());
+        this.removedCards.forEach(card => card.update());
+
         if (this.getMaxCardValue() >= 2048) {
             this.state = BoardState.End;
             this.emit('gameWon');
-            return
+            return;
         }
 
-        this.addNewCardRandom();
-        if (this.isFull()) {
-            let canMoveOrMerge = (this.moveCards(Left) || 
-                                  this.moveCards(Right) ||
-                                  this.moveCards(Up) ||
-                                  this.moveCards(Down));
-            if (!canMoveOrMerge) {
-                this.state = BoardState.End;
-                this.emit('gameOver');
+        if (this.newCardRequested && !this.isAnimating()) {
+            this.newCardRequested = false;
+            this.addNewCardRandom();
+            if (this.isFull()) {
+                let canMoveOrMerge = (this.moveCards(Left) || 
+                                    this.moveCards(Right) ||
+                                    this.moveCards(Up) ||
+                                    this.moveCards(Down));
+                if (!canMoveOrMerge) {
+                    this.state = BoardState.End;
+                    this.emit('gameOver');
+                }
             }
         }
     }
@@ -266,7 +289,7 @@ class Board extends EventEmitter{
             console.error("Invalid cards array length.");
             return [];
         }
-        this.emptyBoard();
+        this.reset();
         var i = 0;
         var j = 0;
 

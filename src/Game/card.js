@@ -13,6 +13,9 @@ import Card2048Image from '../Assets/2048.png';
 
 import Sprite from './Renderer/sprite.js';
 
+import { MoveAnimation, ResizeAnimation } from './Renderer/animation.js';
+
+
 function getCardImage(value) {
     switch (value) {
         case 2: return Card2Image;
@@ -39,7 +42,7 @@ var CardState = {
 }
 
 class Card {
-    constructor(value, pivotX, pivotY, maxI, maxJ) {
+    constructor(value, pivotX, pivotY, i, j, maxI, maxJ) {
         if (value <= 0) {
             console.error("Invalid card value!");
             return;
@@ -51,7 +54,9 @@ class Card {
         this.maxJ = maxJ;
         this._state = CardState.New;
         this.createSprite();
-        this.setToGrid(0,0);
+        this.setToGrid(i,j);
+        this.cardSprite.resize(0,0);
+        this.animation = new ResizeAnimation(this.cardSprite, 100,100,10);
     }
 
     createSprite() {
@@ -60,16 +65,31 @@ class Card {
         this.cardSprite.height = 100;
     }
 
-    setToGrid(i, j) {
+    setToGridCore(i,j) {
         if (i > this.maxI)
-            return;
+            return false;
         if (j > this.maxJ)
-            return;
-
+            return false;
+        
+        if (this.i === i && this.j === j)
+            return false;
+        
         this.i = i;
         this.j = j;
-        this.setSpritePosition(this.pivotX + (i+1)*10 + i*100, this.pivotY + (j+1)*10 + j*100);
 
+        return true;
+    }
+
+    setToGrid(i, j) {
+        if (this.setToGridCore(i,j)) {
+            this.setSpritePosition(this.pivotX + (i+1)*10 + i*100, this.pivotY + (j+1)*10 + j*100);
+        }
+    }
+
+    moveToGrid(i,j, onFinished) {
+        if (this.setToGridCore(i,j)) {
+            this.animation = new MoveAnimation(this.cardSprite, this.pivotX + (i+1)*10 + i*100, this.pivotY + (j+1)*10 + j*100, 30, onFinished);
+        }
     }
 
     setSpritePosition(x, y) {
@@ -119,7 +139,20 @@ class Card {
             this._value *= 2;
             this.updateSpriteImage();
             this._state = CardState.Upgraded;
+            this.animation = new ResizeAnimation(this.cardSprite, 130,130,10, () => {
+                this.animation = new ResizeAnimation(this.cardSprite, 100, 100, 10)
+            });
         }
+    }
+
+    update() {
+        if (this.animation && !this.animation.finished) {
+            this.animation.update();
+        }
+    }
+
+    animating() {
+        return (this.animation && !this.animation.finished);
     }
 }
 

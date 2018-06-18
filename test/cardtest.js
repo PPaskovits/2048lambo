@@ -6,30 +6,18 @@ const sinon = require('sinon');
 
 import Card from '../src/Game/card.js';
 
-class SpriteMock {
-    constructor(src) {
-        this.src = src;
-        this.posX = 0;
-        this.posY = 0;
-        this.height = 0;
-        this.width = 0;
-    }
-}
-
-function getCardImageMock(value) {
-    return value;
-}
+import { SpriteMock, getCardImageMock } from './mocks.js';
 
 export default function runCardTests() {
-    global.Sprite = SpriteMock
-    global.getCardImage = getCardImageMock
+    global.Sprite = SpriteMock;
+    global.getCardImage = getCardImageMock;
 
     describe('Card Test', function() {
         describe('Basic card test', function() {
             it('should equal ', function() {
-                var card = new Card(1024,10,10,5,5);
-                chai.expect(card.row).eql(0); 
-                chai.expect(card.column).eql(0);
+                var card = new Card(1024,10,10,1,1,5,5);
+                chai.expect(card.row).eql(1); 
+                chai.expect(card.column).eql(1);
 
                 card.setToGrid(1,2);
 
