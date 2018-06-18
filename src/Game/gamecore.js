@@ -87,17 +87,18 @@ class GameCore extends EventEmitter {
             return;
         }
 
+        var actionCount = 0;
         if (key === "left") {
-            this.board.left();
-            this.board.requestNewCard();
+            actionCount = this.board.left();
         } else if (key === "right") {
-            this.board.right();
-            this.board.requestNewCard();
+            actionCount = this.board.right();
         } else if (key === "up") {
-            this.board.up();
-            this.board.requestNewCard();
+            actionCount = this.board.up();
         } else if (key === "down") {
-            this.board.down();
+            actionCount = this.board.down();
+        }
+
+        if (actionCount > 0) {
             this.board.requestNewCard();
         }
     }

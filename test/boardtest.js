@@ -83,7 +83,7 @@ export default function runBoardTests() {
                 board.down();
                 
                 board.update();
-                
+
                 chai.assert(spy.calledOnce);
             });
         });
@@ -157,6 +157,21 @@ export default function runBoardTests() {
                      512, 1024, 16, 2,
                      512, 2,    4,  4];
                 chai.expect(cardsArrayResult).to.eql(board.getBoard());
+            });
+        });
+
+        describe('Board actionCount test', function() {
+            it('should be equal ', function() {
+                var cardsArray = 
+                    [256, 4,    8,  0,
+                     4,   32,   16, 0,
+                     16,  1024, 2,  2,
+                     512, 2,    4,  4];
+                board.setBoard(cardsArray);
+                var actionCount = board.down();
+                chai.expect(actionCount).to.eql(0);
+                actionCount = board.left();
+                chai.expect(actionCount).to.eql(2);
             });
         });
 

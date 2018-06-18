@@ -216,9 +216,11 @@ class Board extends EventEmitter{
         if (!this.canStep())
             return;
 
-        if (this.moveCards(movement, this.moveCard.bind(this), this.mergeCards.bind(this))) {
+        var actionCount = this.moveCards(movement, this.moveCard.bind(this), this.mergeCards.bind(this));
+        if (actionCount > 0) {
             this.cards.forEach(card => card.stepFinished());
         }
+        return actionCount;
     }
 
     requestNewCard() {
@@ -259,19 +261,19 @@ class Board extends EventEmitter{
     }
 
     left() {
-        this.move(Left);
+        return this.move(Left);
     }
 
     right() {
-        this.move(Right);
+        return this.move(Right);
     }
 
     up() {
-        this.move(Up);
+        return this.move(Up);
     }
 
     down() {
-        this.move(Down);
+        return this.move(Down);
     }
 
     reset() {
