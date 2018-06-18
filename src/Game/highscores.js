@@ -29,7 +29,7 @@ class Highscore {
         var scoresString = readCookie("highscores");
         if (scoresString != null) {
             var highscores = JSON.parse(scoresString);
-            highscores.forEach(score => this.highscores.push(score));
+            highscores.forEach(score => this.highscores.push(parseInt(score)));
         }
         this.sortScores();
     }
@@ -41,7 +41,7 @@ class Highscore {
 
     sortScores() {
         this.highscores.sort((a, b) => b - a);
-        this.highscores = this.highscores.splice(0,9);
+        this.highscores = this.highscores.slice(0,9);
     }
 
     registerScore(score) {
@@ -55,7 +55,7 @@ class Highscore {
     }
 
     getScores() {
-        return this.highscores.splice(0);
+        return this.highscores.slice(0);
     }
 }
 
