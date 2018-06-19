@@ -15,6 +15,9 @@ import Card2048Image from '../Assets/2048.png';
 import BGImage from '../Assets/bg.jpg';
 import GridImage from '../Assets/grid.png';
 import GridBGImage from '../Assets/gridbg.png';
+import GameOverImage from '../Assets/gameover.png';
+import GameWonImage from '../Assets/gamewon.png';
+import LamboImage from '../Assets/lambo.png';
 
 var assets = [];
 assets.push({name: "2.png", path: Card2Image});
@@ -32,5 +35,8 @@ assets.push({name: "2048.png", path: Card2048Image});
 assets.push({name: "bg.jpg", path: BGImage});
 assets.push({name: "grid.png", path: GridImage});
 assets.push({name: "gridbg.png", path: GridBGImage});
+assets.push({name: "gameover.png", path: GameOverImage});
+assets.push({name: "gamewon.png", path: GameWonImage});
+assets.push({name: "lambo.png", path: LamboImage});
 
 export default assets;

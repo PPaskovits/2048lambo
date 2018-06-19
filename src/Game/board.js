@@ -9,8 +9,7 @@ const Down = 3;
 
 var BoardState = {
     Game: 1,
-    Animating: 2,
-    End: 3
+    End: 2
 }
 
 class Board extends EventEmitter{
@@ -238,13 +237,13 @@ class Board extends EventEmitter{
         this.cards.forEach(card => card.update());
         this.removedCards.forEach(card => card.update());
 
-        if (this.getMaxCardValue() >= 2048) {
+        if (this.state === BoardState.Game && this.getMaxCardValue() >= 2048) {
             this.state = BoardState.End;
             this.emit('gameWon');
             return;
         }
 
-        if (this.newCardRequested && !this.isAnimating()) {
+        if (this.state === BoardState.Game && this.newCardRequested && !this.isAnimating()) {
             this.newCardRequested = false;
             this.addNewCardRandom();
             if (this.isFull()) {
@@ -279,6 +278,7 @@ class Board extends EventEmitter{
     reset() {
         this.emptyBoard();
         this.state = BoardState.Game;
+        this.newCardRequested = false;
     }
 
     emptyBoard() {

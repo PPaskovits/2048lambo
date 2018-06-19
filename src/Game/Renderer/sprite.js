@@ -8,6 +8,7 @@ class Sprite {
         this._width = 0;
         this._height = 0;
         this.visible = true;
+        this._alpha = 1;
     }
 
     get posX() {
@@ -42,6 +43,14 @@ class Sprite {
         this._height = height;
     }
 
+    get alpha() {
+        return this._alpha;
+    }
+
+    set alpha(alpha) {
+        this._alpha = alpha;
+    }
+
     resize(width, height) {
         var centerX = this.posX + this.width/2;
         var centerY = this.posY + this.height/2;
@@ -55,7 +64,10 @@ class Sprite {
         if (!this.visible)
             return;
 
+        context.save();
+        context.globalAlpha = this.alpha;
         context.drawImage(this.image, this._posX, this._posY, this._width, this._height);
+        context.restore();
     }
 
     setImage(imageName) {

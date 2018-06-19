@@ -1,12 +1,12 @@
 "use strict";
 
-//import './phase.js';
 import Loading from './loading.js';
 import MainMenu from './mainmenu.js';
 import HighScores from './highscores.js';
 import Game from './game.js';
-//import './mainmenu.js';
-//import './highscores.js';
+
+import LamboSmallImage from '../Assets/lambo_small.png';
+
 
 class GUI {
     constructor(game) {
@@ -34,10 +34,17 @@ class GUI {
 
         this.gamePhase = new Game();
         this.gamePhase.on('newGameClicked', this.startNewGameClicked.bind(this));
+        this.gamePhase.on('highscoresClicked', this.highscoresClicked.bind(this));
 
         this.phases.push(this.gamePhase);
 
         this.lastPhases = [];
+
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        link.type = 'image/x-icon';
+        link.rel = 'shortcut icon';
+        link.href = LamboSmallImage;
+        document.getElementsByTagName('head')[0].appendChild(link);
     }
 
     hideAllPhases() {
@@ -65,7 +72,6 @@ class GUI {
     }
 
     preloadFinished() {
-        console.log("preload finished")
         this.setPhase("mainmenu");
     }
 

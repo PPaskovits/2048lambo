@@ -4,13 +4,11 @@ const sinon = require('sinon');
 
 import Card from '../src/Game/card.js';
 import Board from '../src/Game/board.js';
-import { SpriteMock } from './mocks.js';
 
 export default function runBoardTests() {
     var board = new Board(0, 0, 3, 3);
 
     describe('Board Test', function() {
-        global.Sprite = SpriteMock;
         describe('Simple set/get board ', function() {
             it('should be equal ', function() {
 

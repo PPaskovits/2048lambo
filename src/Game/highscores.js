@@ -41,7 +41,7 @@ class Highscore {
 
     sortScores() {
         this.highscores.sort((a, b) => b - a);
-        this.highscores = this.highscores.slice(0,9);
+        this.highscores = this.highscores.slice(0,10);
     }
 
     registerScore(score) {

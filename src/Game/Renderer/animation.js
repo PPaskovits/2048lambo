@@ -12,9 +12,9 @@ class Animation {
 
     set finished(value) {
         if (!this._finished && value) {
-            this._finished = value;
             if (this.onFinished)
                 this.onFinished();
+            this._finished = value;
         }
     }
 
@@ -39,6 +39,9 @@ class MoveAnimation extends Animation {
         //var d = Math.sqrt(Math.pow(this.targetX - this.object.posX, 2) + Math.pow(this.targetY - this.object.posY, 2));
         this.angle = -Math.atan2(-(this.targetY - this.object.posY), this.targetX - this.object.posX);
         this._finished = this.targetX === this.object.posX && this.targetY === this.object.posY;
+        if (this.finished && this.onFinished) {
+            onFinished();
+        }
     }
 
     step() {
@@ -65,6 +68,9 @@ class ResizeAnimation extends Animation {
         this.targetHeight = targetHeight;
         this.velocity = velocity;
         this._finished = this.targetWidth === this.object.width && this.targetHeight === this.object.height;
+        if (this.finished && this.onFinished) {
+            onFinished();
+        }
     }
 
     step() {
@@ -90,7 +96,33 @@ class ResizeAnimation extends Animation {
     }
 }
 
+
+class FadeAnimation extends Animation {
+    constructor(object, targetAlpha, delta, onFinished) {
+        super(onFinished);
+        this.object = object;
+        this.targetAlpha = targetAlpha;
+        this.delta = delta;
+        this._finished = this.targetAlpha === this.object.alpha;
+        if (this.finished && this.onFinished) {
+            onFinished();
+        }
+    }
+
+    step() {
+        var d = Math.abs(this.targetAlpha - this.object.alpha);
+        if (d <= this.delta) {
+            this.object.alpha = this.targetAlpha;
+        } else {
+            this.object.alpha =  this.object.alpha - this.targetAlpha < 0 ? this.object.alpha + this.delta : this.object.alpha - this.delta;
+        }
+
+        this.finished = this.targetAlpha === this.object.alpha;
+    }
+}
+
 export  {
     MoveAnimation,
-    ResizeAnimation
+    ResizeAnimation,
+    FadeAnimation
 };

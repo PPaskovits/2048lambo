@@ -15,6 +15,8 @@ class Game extends Phase {
 
         this.createNewGameButton();
 
+        this.createHighscoreButton();
+
         this.element.appendChild(this.viewContainer);
     }
 
@@ -69,6 +71,15 @@ class Game extends Phase {
         this.newGameBtn.innerHTML = "New Game";
         this.newGameBtn.addEventListener("click", () => this.emit("newGameClicked"));
         this.viewContainer.appendChild(this.newGameBtn);
+    }
+
+    createHighscoreButton() {
+        this.highscoreBtn = document.createElement('div');
+        this.highscoreBtn.classList.add('btn');
+        this.highscoreBtn.classList.add('small');
+        this.highscoreBtn.innerHTML = "Highscores";
+        this.highscoreBtn.addEventListener("click", () => this.emit("highscoresClicked"));
+        this.viewContainer.appendChild(this.highscoreBtn);
     }
 
     setScore(score) {

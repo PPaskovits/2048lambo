@@ -11,6 +11,7 @@ class Highscores extends Phase {
 
         this.highscoreList = document.createElement('div');
         this.highscoreList.classList.add('column');
+        this.highscoreList.classList.add('highscores-container');
 
         this.container.appendChild(this.highscoreList);
 

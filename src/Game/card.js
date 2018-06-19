@@ -3,9 +3,6 @@ import Sprite from './Renderer/sprite.js';
 
 import { MoveAnimation, ResizeAnimation } from './Renderer/animation.js';
 
-
-
-
 var CardState = {
     Normal: 0,
     Upgraded: 1,

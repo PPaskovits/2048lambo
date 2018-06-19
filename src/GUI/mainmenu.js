@@ -1,6 +1,7 @@
 "use strict";
 
 import Phase from './phase.js';
+import LamboImage from '../Assets/lambo.png';
 
 class MainMenu extends Phase {
     constructor() {
@@ -10,9 +11,11 @@ class MainMenu extends Phase {
         this.container.classList.add('column');
 
         this.title = document.createElement('div');
-        this.title.innerHTML = "Lambo 4 Xmas 2048";
         this.title.classList.add('title');
-        
+        this.lamboImg = document.createElement('img');
+        this.lamboImg.src = LamboImage;
+        this.title.appendChild(this.lamboImg);
+
         this.startGameButton = document.createElement('div');
         this.startGameButton.innerHTML = "Start Game";
         this.startGameButton.classList.add('btn');

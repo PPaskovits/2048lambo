@@ -6,10 +6,9 @@ const sinon = require('sinon');
 
 import Card from '../src/Game/card.js';
 
-import { SpriteMock, AssetManagerMock } from './mocks.js';
+import { AssetManagerMock } from './mocks.js';
 
 export default function runCardTests() {
-    global.Sprite = SpriteMock;
     global.assetManager = new AssetManagerMock();
 
     describe('Card Test', function() {

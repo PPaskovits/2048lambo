@@ -6,12 +6,9 @@ import Renderer from '../src/Game/Renderer/renderer.js';
 import Scene from '../src/Game/Renderer/scene.js';
 import Sprite from '../src/Game/Renderer/sprite.js';
 
-import { ImageMock, CanvasMock } from './mocks.js';
+import { CanvasMock } from './mocks.js';
 
 export default function runRendererTests() {
-    global.Image = ImageMock
-    global.Canvas = CanvasMock
-
     describe('Renderer Test', function() {
         describe('Sprite test', function() {
             it('basic test ', function() {
@@ -20,33 +17,37 @@ export default function runRendererTests() {
                 sprite.posY = 20;
                 sprite.width = 100;
                 sprite.height = 200;
+                sprite.alpha = 1;
 
-                var context = { drawImage: function (image, posX, posY, width, height) {} };
-                var spy = sinon.spy(context, "drawImage");
+                var canvas = new CanvasMock();
+
+                var spy = sinon.spy(canvas.context, "drawImage");
                 
-                sprite.draw(context);
+                sprite.draw(canvas.context);
                 chai.assert(spy.withArgs(sprite.image, 10, 20, 100, 200).called);
 
                 sprite.posX = 15;
                 sprite.posY = 25;
                 sprite.width = 150;
                 sprite.height = 250;
+                sprite.alpha = 0.5;
                 sprite.setImage('test2.png');
 
                 chai.expect(sprite.posX).eql(15);
                 chai.expect(sprite.posY).eql(25);
                 chai.expect(sprite.width).eql(150);
                 chai.expect(sprite.height).eql(250);
+                chai.expect(sprite.alpha).eql(0.5);
                 
                 chai.expect(sprite.image.src).eql('test2.png');
 
                 sprite.hide();
-                sprite.draw(context);
+                sprite.draw(canvas.context);
                 chai.assert(spy.calledOnce);
 
                 sprite.show();
 
-                sprite.draw(context);
+                sprite.draw(canvas.context);
                 chai.assert(spy.withArgs(sprite.image, 15, 25, 150, 250).called);
                 chai.assert(spy.calledTwice);
                 

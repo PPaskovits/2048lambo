@@ -33,6 +33,8 @@ div {
     border: 1px solid black ;
     border-radius: 5px;
     margin:10px;
+    margin-left:25px;
+    margin-right:25px;
 }
 
 .btn:hover {
@@ -58,6 +60,15 @@ div {
     padding:25px;
 }
 
+.highscores-container {
+    background-color: #8e121c;
+    border: 1px solid black ;
+    border-radius: 5px;
+    color:  white;
+    padding:20px;
+    margin:10px;
+}
+
 .column {
     flex-direction: column;
 }
@@ -74,6 +85,7 @@ div {
     border-radius: 5px;
     padding: 5px;
     width: 150px;
+    margin:15px;
 }
 
 .score-title {

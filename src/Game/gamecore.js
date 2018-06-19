@@ -51,7 +51,6 @@ class GameCore extends EventEmitter {
         this.init(canvas);
 
         this.startPreload();
-
     }
 
     startPreload() {
@@ -89,11 +88,15 @@ class GameCore extends EventEmitter {
     }
 
     startNewGame() {
+        if (this.board.isAnimating() || this.grid.isAnimating())
+            return;
+
         this.score = 0;
         this.board.reset();
-        this.grid.show();
-        this.board.addNewCardRandom();
-        this.board.addNewCardRandom();
+        this.grid.gameStart(() => {
+            this.board.addNewCardRandom();
+            this.board.addNewCardRandom();
+        });
     }
 
     keyWasPressed(key) {
@@ -112,12 +115,14 @@ class GameCore extends EventEmitter {
             actionCount = this.board.down();
         }
 
-        if (actionCount > 0) {
+        if (actionCount > 0 && this.board.canStep()) {
             this.board.requestNewCard();
         }
     }
 
     update() {
+        this.grid.update();
+
         this.board.update();
 
         this.renderer.render();
@@ -126,12 +131,18 @@ class GameCore extends EventEmitter {
     }
 
     gameEnd(won) {
-        this.grid.hide();
-        this.board.emptyBoard();
-        this.highscore.registerScore(this.score);
+        setTimeout(() => {
+            this.board.emptyBoard();
+            if (won)
+                this.grid.gameWon();
+            else 
+                this.grid.gameOver();            
 
-        this.emit('bestScoreChanged', this.highscore.getBestScore()); 
-        this.emit('highscoresChanged', this.highscore.getScores());
+            this.highscore.registerScore(this.score);
+            this.emit('bestScoreChanged', this.highscore.getBestScore()); 
+            this.emit('highscoresChanged', this.highscore.getScores());
+        }, 1000);
+
     }
 }
 
