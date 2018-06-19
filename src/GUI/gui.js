@@ -12,13 +12,15 @@ class GUI {
     constructor(game) {
         this.game = game;
         game.on('preloadStarted', this.preloadStarted.bind(this));
+        game.on('preloadProcessing', this.preloadProcessing.bind(this));
         game.on('preloadFinished', this.preloadFinished.bind(this));
         game.on('scoreChanged', this.scoreChanged.bind(this));
         game.on('bestScoreChanged', this.bestScoreChanged.bind(this));
         game.on('highscoresChanged', this.highscoresChanged.bind(this));
 
         this.phases = [];
-        this.phases.push(new Loading());
+        this.loading = new Loading();
+        this.phases.push(this.loading);
 
         var mainMenu = new MainMenu();
         mainMenu.on('startNewGameClicked', this.startNewGameClicked.bind(this));
@@ -55,8 +57,11 @@ class GUI {
     }
 
     preloadStarted() {
-        console.log("preload started")
         this.setPhase("loading");
+    }
+
+    preloadProcessing(data) {
+        this.loading.setPercent(Math.floor((data.loaded/data.toLoad)*100));
     }
 
     preloadFinished() {

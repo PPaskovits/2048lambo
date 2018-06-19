@@ -13,8 +13,8 @@ class SpriteMock {
 }
 
 class ImageMock {
-    constructor() {
-        this.src = "";
+    constructor(src) {
+        this.src = src;
     }
 }
 
@@ -30,14 +30,19 @@ class CanvasMock {
     }
 }
 
+class AssetManagerMock {
+    constructor() {
 
-function getCardImageMock(value) {
-    return value;
+    }
+
+    getImage(imageName) {
+        return new ImageMock(imageName);
+    }
 }
 
 export  {
     SpriteMock,
     ImageMock,
     CanvasMock,
-    getCardImageMock,
+    AssetManagerMock,
 };

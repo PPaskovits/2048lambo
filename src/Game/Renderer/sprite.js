@@ -1,9 +1,8 @@
 "use strict";
 
 class Sprite {
-    constructor(imagePath) {
-        this.image = new Image();
-        this.image.src = imagePath;
+    constructor(imageName) {
+        this.image = assetManager.getImage(imageName);
         this._posX = 0;
         this._posY = 0;
         this._width = 0;
@@ -59,10 +58,8 @@ class Sprite {
         context.drawImage(this.image, this._posX, this._posY, this._width, this._height);
     }
 
-    setImage(imagePath) {
-        if (this.image) {
-            this.image.src = imagePath;
-        }
+    setImage(imageName) {
+        this.image = assetManager.getImage(imageName);
     }
 
     hide() {

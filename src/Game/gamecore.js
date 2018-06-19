@@ -1,14 +1,15 @@
 "use strict";
 
 import EventEmitter from 'events';
+import AssetManager from './Engine/assetmanager.js';
 import KeyboardState from './Engine/keyboardstate.js';
 import Renderer from './Renderer/renderer.js';
 import Grid from './grid.js';
 import Card from './card.js';
 import Board from './board.js';
-
 import Highscore from './highscores.js';
-import BGImage from '../Assets/bg.jpg';
+
+import assets from './assets.js';
 
 class GameCore extends EventEmitter {
     constructor() {
@@ -17,26 +18,15 @@ class GameCore extends EventEmitter {
     }
 
     init(canvas) {
+        this.canvas = canvas;
+
         this.keyboard = new KeyboardState();
         this.keyboard.on('keyWasPressed', keyCode => this.keyWasPressed(keyCode));
-        this.renderer = new Renderer(canvas);
-        this.grid = new Grid(this.renderer.getCanvasWidth() / 2, this.renderer.getCanvasHeight() / 2);
-        this.renderer.addToScene(this.grid.bg);
-        this.renderer.addToScene(this.grid.sprite);
 
-        this.board = new Board(this.grid.pivotX, this.grid.pivotY, 3, 3);
-        this.board.on('newCardAdded', (sprite) => { this.renderer.addToScene(sprite); } );
-        this.board.on('cardRemoved', (sprite) => { this.renderer.removeFromScene(sprite); } );
-        this.board.on('cardUpgraded', (card) => { this.score += card.value } );
-        this.board.on('gameWon', (card) => { this.gameEnd(true); } );
-        this.board.on('gameOver', (card) => { this.gameEnd(false); } );
+        this.assetManager = new AssetManager(assets);
+        this.assetManager.on('preloadFinished', () => { this.preloadFinished() });
 
-        this._score = 0;
-        this.highscore = new Highscore();
-        this.highscore.loadHighscore();
-
-        this.emit('bestScoreChanged', this.highscore.getBestScore());
-        this.emit('highscoresChanged', this.highscore.getScores());
+        global['assetManager'] = this.assetManager;
     }
 
     get score() {
@@ -57,20 +47,44 @@ class GameCore extends EventEmitter {
         return;
     }
 
-    start() {
+    start(canvas) {
+        this.init(canvas);
+
         this.startPreload();
+
     }
 
     startPreload() {
+        this.assetManager.preloadAssets((assetsToLoad, assetsLoaded) => {
+            this.emit('preloadProcessing', {toLoad: assetsToLoad, loaded: assetsLoaded});
+        })
         this.emit("preloadStarted");
-        setTimeout(this.preloadFinished.bind(this), 1000);
-
     }
 
     preloadFinished() {
+        this.renderer = new Renderer(this.canvas);
+        this.grid = new Grid(this.renderer.getCanvasWidth() / 2, this.renderer.getCanvasHeight() / 2);
+        this.renderer.addToScene(this.grid.bg);
+        this.renderer.addToScene(this.grid.sprite);
+
+        this.board = new Board(this.grid.pivotX, this.grid.pivotY, 3, 3);
+        this.board.on('newCardAdded', (sprite) => { this.renderer.addToScene(sprite); } );
+        this.board.on('cardRemoved', (sprite) => { this.renderer.removeFromScene(sprite); } );
+        this.board.on('cardUpgraded', (card) => { this.score += card.value } );
+        this.board.on('gameWon', (card) => { this.gameEnd(true); } );
+        this.board.on('gameOver', (card) => { this.gameEnd(false); } );
+
+        this._score = 0;
+        this.highscore = new Highscore();
+        this.highscore.loadHighscore();
+
+        this.emit('bestScoreChanged', this.highscore.getBestScore());
+        this.emit('highscoresChanged', this.highscore.getScores());
+
         this.emit("preloadFinished");
+        
         window.requestAnimationFrame(this.update.bind(this), this.renderer.canvas);
-        document.body.style.backgroundImage = "url('"+BGImage+"')";
+        document.body.style.backgroundImage = "url('"+assetManager.getImage('bg.jpg').src+"')";
         document.body.style.backgroundRepeat = "repeat";
     }
 

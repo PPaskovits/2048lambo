@@ -8,6 +8,5 @@ window.onload = () => {
     var game = new GameCore();
     var gui = new GUI(game);
     
-    game.init(gui.getCanvas());
-    game.start();
+    game.start(gui.getCanvas());
 }

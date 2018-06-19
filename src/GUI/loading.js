@@ -7,9 +7,13 @@ class Loading extends Phase {
         super('loading');
         this.loadingText = document.createElement('div');
         this.loadingText.classList.add('title');
-        this.loadingText.innerHTML = 'Loading...';
+        this.loadingText.innerHTML = 'Loading...0%';
 
         this.element.appendChild(this.loadingText);
+    }
+
+    setPercent(percent) {
+        this.loadingText.innerHTML = 'Loading...'+percent+'%';
     }
 }
 
