@@ -4,7 +4,6 @@ import GameCore from './Game/gamecore.js';
 import GUI from './GUI/gui.js';
 
 window.onload = () => {
-    console.log("Page loadeded!");
     var game = new GameCore();
     var gui = new GUI(game);
     

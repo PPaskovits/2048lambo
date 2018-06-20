@@ -14,7 +14,6 @@ import assets from './assets.js';
 class GameCore extends EventEmitter {
     constructor() {
         super();
-        console.log("Game Core constructed");
     }
 
     init(canvas) {
