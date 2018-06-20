@@ -8,10 +8,15 @@ module.exports = {
 		filename: 'main.js',
 		path: path.resolve(__dirname, 'dist')
 	},
+	performance: {
+		maxEntrypointSize: 512000,
+		maxAssetSize: 512000
+	},
 	devtool: 'inline-source-map',
 	devServer: {
 		contentBase: './dist'
-	},	
+	},
+	mode: 'production',
 	plugins: [
 		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
