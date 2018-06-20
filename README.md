@@ -70,12 +70,6 @@ Development Watch Start:
 npm run startdev
 ```
 
-Development Watch Start:
-----------------
-```
-npm run startdev
-```
-
 Testing:
 ----------------
 ```
