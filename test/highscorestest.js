@@ -28,7 +28,6 @@ export default function runHighscoresTests() {
                 highscores.registerScore(10500);
                 chai.expect(highscores.getBestScore()).eql(10500);
                 chai.expect(highscores.getScores()).eql([10500,9500,8500,7500,6500,5500,4500,3500,2500,1500]);
-                chai.expect(document.cookie).eql("highscores=[10500,9500,8500,7500,6500,5500,4500,3500,2500,1500]; path=/");
             });
         });
     });

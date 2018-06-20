@@ -9,8 +9,13 @@ class SpriteMock {
         console.log("SpriteMock: " + src);
     }
 
-    resize() {
-        
+    resize(width, height) {
+        var centerX = this.posX + this.width/2;
+        var centerY = this.posY + this.height/2;
+        this.posX = centerX - width/2;
+        this.posY = centerY - height/2;
+        this.width = width;
+        this.height = height;
     }
 
     setImage(src) {

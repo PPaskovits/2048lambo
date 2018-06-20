@@ -47,15 +47,16 @@ export default function runAnimationTests() {
 
                 var animation = new ResizeAnimation(sprite, 100, 200, 13, watcher.finished);
 
-                while (!animation.finished)
+                while (!animation.finished) {
                     animation.update();
+                }
 
                 chai.assert(spy.calledOnce);
                 
                 chai.expect(sprite.posX).eql(-30);
                 chai.expect(sprite.posY).eql(-60);
 
-                chai.expect(sprite.width).eql(5);
+                chai.expect(sprite.width).eql(100);
                 chai.expect(sprite.height).eql(200);
             });
         });

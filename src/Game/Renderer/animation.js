@@ -89,7 +89,6 @@ class ResizeAnimation extends Animation {
         } else {
             newHeight = this.object.height - this.targetHeight < 0 ? this.object.height + this.velocity : this.object.height - this.velocity;
         }
-
         this.object.resize(newWidth, newHeight);
 
         this.finished = this.targetWidth === this.object.width && this.targetHeight === this.object.height;

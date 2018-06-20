@@ -29,12 +29,12 @@ export default function runGridTests() {
                 var spy = sinon.spy(watcher, "finished");
 
 
-                grid.gameStart(spy.finished);
+                grid.gameStart(watcher.finished);
 
                 while (grid.isAnimating())
                     grid.update();
 
-                spy.calledOnce;
+                chai.assert(spy.calledOnce);
 
                 grid.gameWon();
             

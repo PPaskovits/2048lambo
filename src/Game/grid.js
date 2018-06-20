@@ -59,6 +59,7 @@ class Grid {
 
     gameStart(onFinished) {
         this.fadeOut(() => {
+            console.log("start finished");
             this.bg.setImage("gridbg.png");
             this.grid.show();
             this.fadeIn(onFinished);
