@@ -13,9 +13,7 @@ class Game extends Phase {
 
         this.createCanvas();
 
-        this.createNewGameButton();
-
-        this.createHighscoreButton();
+        this.createButtons();
 
         this.element.appendChild(this.viewContainer);
     }
@@ -64,22 +62,24 @@ class Game extends Phase {
         this.viewContainer.appendChild(this.canvas);
     }
 
-    createNewGameButton() {
+    createButtons() {
+        this.buttonsContainer = document.createElement('div');
+
         this.newGameBtn = document.createElement('div');
         this.newGameBtn.classList.add('btn');
         this.newGameBtn.classList.add('small');
         this.newGameBtn.innerHTML = "New Game";
         this.newGameBtn.addEventListener("click", () => this.emit("newGameClicked"));
-        this.viewContainer.appendChild(this.newGameBtn);
-    }
 
-    createHighscoreButton() {
         this.highscoreBtn = document.createElement('div');
         this.highscoreBtn.classList.add('btn');
         this.highscoreBtn.classList.add('small');
         this.highscoreBtn.innerHTML = "Highscores";
         this.highscoreBtn.addEventListener("click", () => this.emit("highscoresClicked"));
-        this.viewContainer.appendChild(this.highscoreBtn);
+
+        this.buttonsContainer.appendChild(this.newGameBtn);
+        this.buttonsContainer.appendChild(this.highscoreBtn);
+        this.viewContainer.appendChild(this.buttonsContainer);
     }
 
     setScore(score) {
