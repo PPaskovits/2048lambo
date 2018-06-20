@@ -46,6 +46,21 @@ Player wins if the board has a card with a value of 2048.
 
 * _index.js_: Entry point
 	
+	
+Future improvements:
+----------------
+The game is currently the same as 2048game.com. 
+
+New features could be:
+* better graphics
+* sounds
+* quest or story mode, time attack, versus modes
+* different themes and context
+* global rank and score list
+* different board sizes
+* tutorial
+* etc
+
 Installation:
 ----------------
 ```
