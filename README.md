@@ -9,11 +9,11 @@ Game Architecture:
 
 Lambo4Xmas has a board, which has X rows and Y columns. The board can contain 0 - (X*Y) cards. 
 
-If an user hits left,right,top,or down, the board tries to move the cards in the given direction.
+If an user hits left, right, top, or down the board tries to move the cards in the given direction.
 
-Cards can merge if they are moved in the same direction and has the same value.
+Cards next to each other can merge if they are moved in the same direction and has the same value.
 
-In case of merge, the merging card disappears, the merged card's value is doubled.
+In case of merge, the merging card disappears and the merged card's value is doubled.
 
 Game is over when the board is full, and the user cannot do any movement.
 
