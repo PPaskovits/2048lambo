@@ -17,7 +17,7 @@ In case of merge, the merging card disappears, the merged card's value is double
 
 Game is over when the board is full, and the user cannot do any movement.
 
-Game is won if board has a card with a value of 2048
+Player wins if the board has a card with a value of 2048.
 
 * Assets - contains the images
 * Game
@@ -44,7 +44,7 @@ Game is won if board has a card with a value of 2048
 	* _mainmenu.js_ - this is the mainscreen phase
 	* _phase.js_ - represents an abstract class of a gui phase
 
-*_index.js_: Entry point
+* _index.js_: Entry point
 	
 Installation:
 ----------------
