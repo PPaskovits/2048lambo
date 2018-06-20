@@ -4,7 +4,8 @@ Win a brand new Lamborghini for Xmas!
 Game is based on 2048game.com.
 Use keys to move the cards around the board. Reach the biggest card value 2048 before the board gets full!
 
-Game Architecture
+Game Architecture:
+----------------
 
 Lambo4Xmas has a board, which has X rows and Y columns. The board can contain 0 - (X*Y) cards. 
 
