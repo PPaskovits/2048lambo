@@ -36,7 +36,7 @@ class Highscore {
 
     saveHighscore() {
         var scoresString = JSON.stringify(this.highscores);
-        saveCookie("highscores", scoresString);
+        saveCookie("highscores", scoresString,365);
     }
 
     sortScores() {
