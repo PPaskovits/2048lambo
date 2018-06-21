@@ -49,10 +49,10 @@ class Board extends EventEmitter{
         if (this.isFull())
             return;
 
-        var value = Math.random > 0.7 ? 4 : 2;
+        var value = Math.random() > 0.7 ? 4 : 2;
         var i = Math.floor(Math.random() * (this.maxI + 1));
         var j = Math.floor(Math.random() * (this.maxJ + 1)); 
-        while (!this.addNewCard(2, i, j)) {
+        while (!this.addNewCard(value, i, j)) {
             i = Math.floor(Math.random() * (this.maxI + 1));
             j = Math.floor(Math.random() * (this.maxJ + 1)); 
         }
